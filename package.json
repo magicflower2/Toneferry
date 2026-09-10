@@ -1,0 +1,31 @@
+{
+  "name": "toneferry",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Toneferry — WASAPI loopback → WebSocket → H5 AudioWorklet (PC audio to phone)",
+  "scripts": {
+    "build:capture": "capture\\build.bat",
+    "build:exe": "node scripts/build-exe.mjs",
+    "build": "npm run build:capture && npm run build:exe",
+    "start": "node server/index.js",
+    "dev": "node server/index.js"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "dependencies": {
+    "ws": "^8.18.3"
+  },
+  "devDependencies": {
+    "@yao-pkg/pkg": "^6.5.1",
+    "esbuild": "^0.25.9",
+    "rcedit": "^5.0.1"
+  },
+  "pkg": {
+    "targets": [
+      "node22-win-x64"
+    ],
+    "outputPath": "release"
+  }
+}
