@@ -1,5 +1,7 @@
 ﻿# Toneferry
 
+![Toneferry](./public/banner.png)
+
 > Windows 系统音频 → 局域网手机实时收听
 
 [English](./README_EN.md)

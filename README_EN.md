@@ -1,5 +1,7 @@
 ﻿# Toneferry
 
+![Toneferry](./public/banner.png)
+
 > Stream Windows system audio to your phone over LAN in real time.
 
 [中文](./README.md)
