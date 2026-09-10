@@ -7,4 +7,5 @@ assets/
 *.exe
 *.pdb
 *.ilk
+blog.md
 .DS_Store
