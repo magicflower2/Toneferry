@@ -21,10 +21,10 @@ let config = null
 let listening = false
 /** Page is hidden / screen off — WS closed on purpose, wait for foreground. */
 let backgroundPaused = false
-/** @type {WakeLockSentinel | null} */
-let wakeLock = null
 /** @type {HTMLAudioElement | null} */
 let keepAliveAudio = null
+const NoSleepCtor = typeof window !== 'undefined' ? window.NoSleep : undefined
+const noSleep = typeof NoSleepCtor === 'function' ? new NoSleepCtor() : null
 /** @type {ReturnType<typeof setTimeout> | null} */
 let reconnectTimer = null
 let reconnectAttempt = 0
@@ -199,34 +199,26 @@ function stopKeepAliveMedia() {
   }
 }
 
-async function requestWakeLock() {
-  if (!listening || !('wakeLock' in navigator)) return
+/** Keep the phone screen on. Must run inside a user gesture (click). */
+function enableNoSleep() {
+  if (!noSleep) return
   try {
-    if (wakeLock) {
-      try {
-        await wakeLock.release()
-      } catch {
-        /* ignore */
-      }
-      wakeLock = null
+    const result = noSleep.enable()
+    if (result && typeof result.catch === 'function') {
+      result.catch((err) => console.warn('NoSleep enable failed', err))
     }
-    wakeLock = await navigator.wakeLock.request('screen')
-    wakeLock.addEventListener('release', () => {
-      wakeLock = null
-    })
   } catch (err) {
-    console.warn('wakeLock failed', err)
+    console.warn('NoSleep enable failed', err)
   }
 }
 
-async function releaseWakeLock() {
-  if (!wakeLock) return
+function disableNoSleep() {
+  if (!noSleep) return
   try {
-    await wakeLock.release()
+    noSleep.disable()
   } catch {
     /* ignore */
   }
-  wakeLock = null
 }
 
 function destroyPlayer() {
@@ -362,7 +354,7 @@ async function resumePlayback() {
   backgroundPaused = false
   clearReconnect()
 
-  await requestWakeLock()
+  enableNoSleep()
   await startKeepAliveMedia()
 
   if (audioContext && audioContext.state === 'suspended') {
@@ -469,13 +461,13 @@ async function start() {
   config = null
   reconnectAttempt = 0
   clearReconnect()
+  enableNoSleep()
 
   const unlock = new AudioContext()
   if (unlock.state === 'suspended') await unlock.resume()
   await unlock.close()
 
   await startKeepAliveMedia()
-  await requestWakeLock()
   connectWs()
 }
 
@@ -487,7 +479,7 @@ async function stop() {
   btnStart.disabled = false
   btnStop.disabled = true
 
-  await releaseWakeLock()
+  disableNoSleep()
   stopKeepAliveMedia()
 
   if (ws) {
@@ -515,10 +507,12 @@ async function stop() {
 }
 
 btnStart.addEventListener('click', () => {
+  enableNoSleep()
   start().catch((err) => {
     console.error(err)
     setStatus(String(err.message || err))
     listening = false
+    disableNoSleep()
     btnStart.disabled = false
     btnStop.disabled = true
   })
