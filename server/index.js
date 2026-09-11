@@ -174,20 +174,20 @@ function printStartupBanner(host, port) {
   console.log(`${c.cyan}${c.bold}   Toneferry  ·  系统音频实时推流已启动${c.reset}`)
   console.log(`${c.cyan}${c.bold}  ${line}${c.reset}`)
   console.log('')
-  console.log(`  ${c.green}${c.bold}访问地址${c.reset}`)
+  console.log(`  ${c.green}${c.bold}访问地址${c.reset}\n`)
   console.log(`    局域网（手机请用这个）：  ${c.yellow}${c.bold}${url}${c.reset}`)
   console.log(`    本机浏览器：              ${c.dim}${localUrl}${c.reset}`)
   console.log(`    WebSocket：               ${c.dim}${wsUrl}${c.reset}`)
   console.log('')
-  console.log(`  ${c.green}${c.bold}如何使用${c.reset}`)
+  console.log(`  ${c.green}${c.bold}如何使用${c.reset}\n`)
   console.log(`    1. 电脑播放音乐 / 视频 / 浏览器声音`)
-  console.log(`    2. 手机连 ${c.bold}同一 Wi‑Fi${c.reset}`)
+  console.log(`    2. 手机与电脑在 ${c.bold}同一局域网${c.reset}`)
   console.log(`    3. 手机浏览器打开上面的局域网地址`)
   console.log(`    4. 点击页面「开始收听」`)
   console.log('')
-  console.log(`  ${c.magenta}${c.bold}注意事项${c.reset}`)
+  console.log(`  ${c.magenta}${c.bold}注意事项${c.reset}\n`)
   console.log(`    · 请保持本窗口开着，${c.yellow}关闭窗口即停止服务${c.reset}`)
-  console.log(`    · ${c.yellow}请先拔掉 / 禁用其他外置音频设备${c.reset}（USB 声卡、耳机等），只保留系统默认扬声器`)
+  console.log(`    · ${c.yellow}请将音频输出设备设为主机自带扬声器${c.reset}（系统声音 → 输出），勿选 USB 声卡 / 耳机等外置设备`)
   console.log(`    · 手机与电脑必须在同一局域网，访客网络可能不通`)
   console.log(`    · 若打不开页面，检查 Windows 防火墙是否放行端口 ${port}`)
   console.log(`    · 息屏 / 切后台后音频可能中断，回到页面会自动尝试恢复`)
@@ -222,7 +222,6 @@ const server = http.createServer((req, res) => {
 const wss = new WebSocketServer({ server, path: WS_PATH })
 
 wss.on('connection', (ws) => {
-  console.log('[ws] client connected', audioConfig ? 'config ready' : 'config pending')
   sendConfig(ws)
 
   ws.on('message', (data, isBinary) => {
@@ -242,7 +241,7 @@ wss.on('connection', (ws) => {
     }
   })
 
-  ws.on('close', () => console.log('[ws] client disconnected'))
+  ws.on('close', () => {});
 })
 
 function startCapture() {

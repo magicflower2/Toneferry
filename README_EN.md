@@ -2,67 +2,31 @@
 
 [中文](./README.md)
 
-> Stream Windows system audio to your phone over LAN in real time.
+> Windows system audio → your phone, in two steps.
 
 ![Toneferry](./public/banner.png)
 
+## Two steps
 
+1. **PC**: Run `Toneferry.exe` (or `npm start` from source)
+2. **Phone**: On the same Wi‑Fi, open the page (scan QR or the printed URL) → listen
 
+Whatever the PC is playing, your phone hears it. No Stereo Mix device needed.
 
-## About
-
-Captures what Windows is currently playing via WASAPI loopback and streams it over WebSocket so phones on the same LAN can listen in a browser (AudioWorklet).
-
-```text
-PC playback
-      │
-      ▼
-WASAPI Loopback → Node.js → WebSocket
-      │
-      ▼
-Phone / tablet browser (H5 AudioWorklet)
-```
-
-## Features
-
-- Full system mix capture (no Stereo Mix device required)
-- LAN playback from a mobile browser
-- Optional single-file Windows `exe` build
-
-## Requirements
-
-- Windows 10/11 x64
-- Node.js ≥ 18 (for source runs)
-- Phone and PC on the same Wi‑Fi
-
-## Quick start
+## From source
 
 ```bash
 npm install
 npm start
 ```
 
-Open the printed URL (default port `3088`) on your phone.
-
-| Env | Description |
-|-----|-------------|
-| `PORT` | HTTP port (default `3088`) |
-| `TONEFERRY_NO_BROWSER=1` | Don’t auto-open a browser |
+Default: `http://<LAN-IP>:3088`
 
 ## Build
 
 ```bash
-npm run build          # native capture + packaged exe → release/Toneferry.exe
-npm run build:capture  # capture binary only
+npm run build   # → release/Toneferry.exe
 ```
-
-## Stack
-
-| Layer | Tech |
-|-------|------|
-| Capture | WASAPI Loopback (native C++) |
-| Server | Node.js + `ws` |
-| Playback | WebSocket + AudioWorklet |
 
 ## License
 

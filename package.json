@@ -20,7 +20,7 @@
   "devDependencies": {
     "@yao-pkg/pkg": "^6.5.1",
     "esbuild": "^0.25.9",
-    "rcedit": "^5.0.1"
+    "resedit": "^3.1.0"
   },
   "pkg": {
     "targets": [
