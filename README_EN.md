@@ -6,12 +6,12 @@
 
 ![Toneferry](./public/banner.png)
 
+Stream whatever the PC is playing to a phone on the same LAN. Wired or wireless is fine. No Stereo Mix device needed.
+
 ## Two steps
 
 1. **PC**: Run `Toneferry.exe` (or `npm start` from source)
-2. **Phone**: On the same Wi‑Fi, open the page (scan QR or the printed URL) → listen
-
-Whatever the PC is playing, your phone hears it. No Stereo Mix device needed.
+2. **Phone**: Open the page (visit the printed LAN URL) → listen
 
 ## From source
 
@@ -27,6 +27,10 @@ Default: `http://<LAN-IP>:3088`
 ```bash
 npm run build   # → release/Toneferry.exe
 ```
+
+## Links
+
+- [LINUX DO](https://linux.do/)
 
 ## License
 
